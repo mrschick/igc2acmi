@@ -9,7 +9,7 @@ def listIGCs(dir): # finds all .igc file names in selected directory, and return
 	p = pl.Path(dir).resolve()
 	igcFiles = []
 	for child in p.iterdir():
-		if child.is_file() and child.suffix == ".igc":
+		if child.is_file() and child.suffix.casefold() == ".igc":
 			igcFiles.append(child.stem)
 
 	return igcFiles
@@ -34,7 +34,11 @@ def getFlightDate(igc): # takes a .igc filepath and only returns the date in YYM
 	with open(igc) as f:
 		for line in f:
 			if line.startswith("HFDTE"):
-				return int(line[9:11]+line[7:9]+line[5:7])
+				if ":" in line:
+					d = line.split(":")[1].strip("\n")
+					return int(d[4:]+d[2:4]+d[:2])
+				else:
+					return int(line[9:11]+line[7:9]+line[5:7])
 
 def getFlightHeader(filename): # takes a .igc filepath and returns header data as a dictionary, along with the plane's first location fix's time
 	tmp = {}
@@ -44,6 +48,8 @@ def getFlightHeader(filename): # takes a .igc filepath and returns header data a
 		if line.startswith("H"):
 			if ":" in line:
 				key, value = line.split(":")
+				if value == "undefined\n":
+					value = ""
 				tmp[key[:5]] = value.strip("\n")
 			else:
 				tmp[line[:5]] = line[5:].strip("\n")
@@ -63,15 +69,22 @@ def getFlightHeader(filename): # takes a .igc filepath and returns header data a
 	# reformat header data
 	header = {}
 	header["firstfixtime"] = fixTime
-	header["callsign"] = tmp["HFGID"]
+
+	if tmp["HFGTY"] == "":
+		header["actype"] = "Glider"
+	else:
+		header["actype"] = tmp["HFGTY"]
+
+	if tmp["HFGID"] == "":
+		header["callsign"] = "NoCallsign"
+	else:
+		header["callsign"] = tmp["HFGID"]
 
 	# if there is a second crewmate, concatenate it with the pilot name
 	if "HFCM2" not in tmp or tmp["HFCM2"] == "":
 		header["pilot"] = tmp["HFPLT"]
 	else:
 		header["pilot"] = tmp["HFPLT"]+" | "+tmp["HFCM2"]
-
-	header["actype"] = tmp["HFGTY"]
 
 	return header
 
