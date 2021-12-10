@@ -59,11 +59,25 @@ def buildAircraft(igcs, refTime): # builds the main data dict of aircraft, with 
 	for igcPath in igcs:
 		i += 1
 		fixes = getFixes(igcPath, refTime)
+		fixKeys = list(fixes.keys())
 		ac[1000+i] = {
 			"header": fnc.getFlightHeader(igcPath),
-			"fixes": fixes,
-			"lastfix": list(fixes.keys())[-1]
+			"firstfix": fixKeys[0],
+			"lastfix": fixKeys[-1],
+			"fixes": fixes
 		}
+
+	# bubble sort aircraft dict, so that the first aircraft recorded is the first aircraft ID
+	ids = list(ac.keys())
+	done = False
+	while not done:
+		done = True
+		for i in range(0, len(ids)-1):
+			if ac[ids[i]]["firstfix"] > ac[ids[i+1]]["firstfix"]:
+				tmp = ac[ids[i]]
+				ac[ids[i]] = ac[ids[i+1]]
+				ac[ids[i+1]] = tmp
+				done = False
 
 	return ac
 
