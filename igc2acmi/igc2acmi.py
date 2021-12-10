@@ -18,6 +18,10 @@ def main():
 	# parse all arguments
 	args = parser.parse_args()
 
+	if args.version:
+		print(a.version)
+		return
+
 	try:
 		# define input file path and name
 		igcTuple = fnc.parsePathName(args.input_igc_file)

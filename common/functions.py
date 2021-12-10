@@ -1,6 +1,7 @@
 import datetime as dt
 import zipfile as zf
 import pathlib as pl
+from common import args as a
 
 
 # FILE NAME/PATH PARSING
@@ -92,7 +93,7 @@ def getFlightHeader(filename): # takes a .igc filepath and returns header data a
 # ACMI FILE PARSING
 
 def acmiFileInit(refDateTime): # takes reference datetime object and returns the first 3 acmi lines
-	return "FileType=text/acmi/tacview\nFileVersion=2.1\n0,ReferenceTime="+refDateTime.strftime("%Y-%m-%d")+"T"+refDateTime.strftime("%H:%M:%S")+"Z\n"
+	return "FileType=text/acmi/tacview\nFileVersion=2.1\nDataRecorder=igc2acmi "+a.version+"\n0,ReferenceTime="+refDateTime.strftime("%Y-%m-%d")+"T"+refDateTime.strftime("%H:%M:%S")+"Z\n"
 
 def acmiObjInit(header, id=1000): # takes a parsed .igc header and returns the respective ACMI object init line
 	return str(id)+",Name="+header["actype"]+",CallSign="+header["callsign"]+",Pilot="+header["pilot"]+"\n"

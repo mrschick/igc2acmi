@@ -20,6 +20,10 @@ def main():
 	# parse all arguments
 	args = parser.parse_args()
 
+	if args.version:
+		print(a.version)
+		return
+
 	try:
 		# define input path
 		inPath = a.parseArgPath(args.input, "Input")

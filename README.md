@@ -43,7 +43,7 @@ pyinstaller --specpath "build" --distpath "build\dist" -p "." --clean -F -i NONE
 Feel free to fork this project for your own uses, any Pull Requests back to the original repository would be greatly appreciated!
 
 ## To-Do List
-- [ ] Add `--version` command that displays version number (and maybe release date)
+- [x] Add `--version` command that displays version number (and maybe release date)
 - [ ] Implement parsing of `igc` [tasks](https://xp-soaring.github.io/igc_file_format/igc_format_2008.html#link_3.6) and [events](https://xp-soaring.github.io/igc_file_format/igc_format_2008.html#link_4.2) into `acmi` [events](https://www.tacview.net/documentation/acmi/en/#Events)
 - [ ] Improve and augment error handling, i.e: for flights with missing/invalid date fields in their header
 - [ ] Add a way for the user to determine the output file's name or name template

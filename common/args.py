@@ -1,8 +1,16 @@
 import pathlib as pl
 from common import console as c
 
+# current release version
+version = "v0.2 - 2021.12.10"
+
 # common arguments that every program uses
 def addDefaultArgs(parser):
+	parser.add_argument(
+		"--version",
+		action = "store_true",
+		help = 'print current version number+date'
+	)
 	parser.add_argument(
 		"-r",
 		"--remove",
