@@ -63,6 +63,7 @@ def buildAircraft(igcs, refTime): # builds the main data dict of aircraft, with 
 		ac[1000+i] = {
 			"header": fnc.getFlightHeader(igcPath),
 			"firstfix": fixKeys[0],
+			"beflastfix": fixKeys[-2],
 			"lastfix": fixKeys[-1],
 			"fixes": fixes
 		}
@@ -154,10 +155,20 @@ def main():
 					rec = ""
 					for id in acs:
 						if i in acs[id]["fixes"]:
+							# if current time offset is first fix of aircraft, pass ACMI "flight start" event
+							if i == acs[id]["firstfix"]:
+								rec += "0,Event=Message|"+str(id)+"|flight started\n"
+
+							# pass aircraft's current position fix
 							fix = acs[id]["fixes"][i]
 							rec += str(id)+",T="+fix["lon"]+"|"+fix["lat"]+"|"+fix["alt"]+"\n"
-							if i == acs[id]["lastfix"]: # if current time offset is last fix of aircraft, pass ACMI object deletion line to record
+
+							# if current time offset is before-last / last fix of aircraft, pass "flight end" event and ACMI object deletion
+							if i == acs[id]["beflastfix"]:
+								rec += "0,Event=Message|"+str(id)+"|flight ended\n"
+							if i == acs[id]["lastfix"]:
 								rec += "-"+str(id)+"\n"
+
 					if rec != "":
 						acmi.write("#"+str(i)+"\n"+rec)
 					i += 1
