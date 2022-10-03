@@ -35,10 +35,7 @@ Maybe that has been resolved by newer FLARM versions, or was caused by incorrect
 ## Sources and How to Contribute
 Development of this project was significantly aided by available documentation for the [igc](https://xp-soaring.github.io/igc_file_format/igc_format_2008.html) and [acmi](https://www.tacview.net/documentation/acmi/en/) file formats, many thanks to their authors.
 
-The [released executables](https://github.com/RUSHER0600/igc2acmi/releases) are compiled with [pyinstaller](https://www.pyinstaller.org/). I use a batch file at the project root with 3 lines like this (last argument differs) to build all programs:
-```winbatch
-pyinstaller --specpath "build" --distpath "build\dist" -p "." --clean -F -i NONE --exclude-module _bootlocale "igc2acmi\igc2acmi.py"
-```
+The [released executables](https://github.com/RUSHER0600/igc2acmi/releases) are compiled with [pyinstaller](https://www.pyinstaller.org/) using [build.bat](build.bat).
 
 Feel free to fork this project for your own uses, any Pull Requests back to the original repository would be greatly appreciated!
 
