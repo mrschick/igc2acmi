@@ -49,7 +49,7 @@ def main():
 				lat, lon, alt = fnc.parseFixLocation(line)
 
 				tOffset = str(fnc.timeDiff(header["firstfixtime"].time(), fixTime))
-				acmi.write("#"+tOffset+"\n1000,T="+lon+"|"+lat+"|"+alt+"\n")
+				acmi.write("#"+tOffset+"\n1000,T="+lon+"|"+lat+"|"+str((int(alt)+args.altdelta))+"\n")
 
 		igc.close()
 		acmi.close()

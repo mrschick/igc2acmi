@@ -36,6 +36,13 @@ def addDefaultArgs(parser):
 		default = "",
 		help = "Output path for acmi file(s)"
 	)
+	parser.add_argument(
+		"-a",
+		"--altdelta",
+		type = int,
+		default = 0,
+		help = "Integer value in meters (can be negative) to add to every location fix's altitude, use when your tracks are consistently misaligned"
+	)
 
 	return parser
 

@@ -165,7 +165,7 @@ def main():
 
 							# pass aircraft's current position fix
 							fix = acs[id]["fixes"][i]
-							rec += str(id)+",T="+fix["lon"]+"|"+fix["lat"]+"|"+fix["alt"]+"\n"
+							rec += str(id)+",T="+fix["lon"]+"|"+fix["lat"]+"|"+str((int(fix["alt"])+args.altdelta))+"\n"
 
 							# if current time offset is before-last / last fix of aircraft, pass "flight end" event and ACMI object deletion
 							if i == acs[id]["beflastfix"]:
@@ -203,7 +203,7 @@ def main():
 				if args.debug: # if debug flag is set, print normal error message
 					c.err("Unable to combine flights of date "+refTime.strftime("%d %b %Y")+", error:\n"+tb.format_exc())
 				else: # default crashdump writing
-					c.err("Unable to convert flights of date "+refTime.strftime("%d %b %Y")+", a crashlog for it has been saved in \""+dump.fileDump(acmiName, "combine-igcs")+"\"")
+					c.err("Unable to combine flights of date "+refTime.strftime("%d %b %Y")+", a crashlog for it has been saved in \""+dump.fileDump(acmiName, "combine-igcs")+"\"")
 
 	except:
 		if args.debug: # if debug flag is set, print normal error message
